@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>শুভ বিবাহ – কল্যাণীয়া অতশ্রী & কুণ্যানীয় বলরাম</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Noto Sans Bengali", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #ffe6f2 0%, #ffd6e8 25%, #ffe0f0 45%, #ffe7d9 70%, #ffe0cc 100%);
+      display: flex;  
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      overflow-x: hidden;
+      flex-direction: column; /* IMPORTANT FIX */
+      align-items: center; /* Center everything */
+    }
+
+    /* Soft glow behind card */
+    .glow-behind {
+      position: fixed;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 182, 214, 0.7), transparent 70%);
+      top: -80px;
+      right: -60px;
+      filter: blur(6px);
+      z-index: -4;
+    }
+
+    /* Soft bubbles */
+    .bg-animation {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      overflow: hidden;
+      z-index: -3;
+      pointer-events: none;
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: -150px;
+      background: rgba(255, 160, 200, 0.23);
+      border-radius: 50%;
+      animation: rise 12s infinite ease-in;
+      filter: blur(2px);
+    }
+
+    @keyframes rise {
+      0%   { transform: translateY(0) scale(1); opacity: 0.3; }
+      50%  { opacity: 0.7; }
+      100% { transform: translateY(-120vh) scale(1.4); opacity: 0; }
+    }
+
+    .bubble:nth-child(1){ width: 90px;  height: 90px;  left: 5%;  animation-duration: 12s; }
+    .bubble:nth-child(2){ width: 60px;  height: 60px;  left: 22%; animation-duration: 10s; }
+    .bubble:nth-child(3){ width: 110px; height: 110px; left: 42%; animation-duration: 13s; }
+    .bubble:nth-child(4){ width: 70px;  height: 70px;  left: 62%; animation-duration: 11s; }
+    .bubble:nth-child(5){ width: 120px; height: 120px; left: 82%; animation-duration: 14s; }
+    .bubble:nth-child(6){ width: 50px;  height: 50px;  left: 32%; animation-duration: 9s; }
+    .bubble:nth-child(7){ width: 95px;  height: 95px;  left: 72%; animation-duration: 15s; }
+
+    /* Flower Petals */
+    .petal-layer {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: -2;
+      overflow: hidden;
+    }
+
+    .petal {
+      position: absolute;
+      top: -10vh;
+      font-size: 22px;
+      animation: fall 8s linear infinite;
+      opacity: 0;
+    }
+
+    @keyframes fall {
+      0%   { transform: translate3d(0, -10vh, 0) rotate(0deg); opacity: 0; }
+      10%  { opacity: 1; }
+      50%  { transform: translate3d(-20px, 50vh, 0) rotate(180deg); }
+      100% { transform: translate3d(20px, 110vh, 0) rotate(360deg); opacity: 0; }
+    }
+
+    /* Different flowers */
+    .petal::before { content: "🌸"; }
+    .petal:nth-child(3)::before { content: "🌺"; }
+    .petal:nth-child(6)::before { content: "🌼"; }
+    .petal:nth-child(9)::before { content: "❀"; }
+    .petal:nth-child(12)::before { content: "✿"; }
+
+    .petal:nth-child(1){ left: 5%; }
+    .petal:nth-child(2){ left: 18%; animation-delay: 1s; }
+    .petal:nth-child(3){ left: 30%; animation-delay: 0.5s; }
+    .petal:nth-child(4){ left: 42%; animation-delay: 1.3s; }
+    .petal:nth-child(5){ left: 55%; animation-delay: 0.8s; }
+    .petal:nth-child(6){ left: 68%; animation-delay: 1.5s; }
+    .petal:nth-child(7){ left: 80%; animation-delay: 0.6s; }
+    .petal:nth-child(8){ left: 12%; animation-delay: 1.8s; }
+    .petal:nth-child(9){ left: 25%; animation-delay: 1.2s; }
+    .petal:nth-child(10){ left: 48%; animation-delay: 2s; }
+    .petal:nth-child(11){ left: 72%; animation-delay: 1.7s; }
+    .petal:nth-child(12){ left: 88%; animation-delay: 1s; }
+
+    /* CARD */
+    .card {
+      max-width: 950px;
+      width: 100%;
+      background: #fffdfd;
+      border-radius: 26px;
+      padding: 26px 24px 32px;
+      border: 2px solid rgba(255, 201, 230, 0.9);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Inner Frame */
+    .card-inner {
+      border-radius: 22px;
+      padding: 18px 18px 26px;
+      background: linear-gradient(145deg, #ffffff, #fff4f9);
+      border: 1px solid rgba(255, 214, 235, 0.9);
+      position: relative;
+    }
+
+    .card-inner::before,
+    .card-inner::after {
+      content: "🌸 🌺 🌼 🌸 🌺 🌼 🌸";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 18px;
+      color: #ff7ba6;
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .card-inner::before { top: 8px; }
+    .card-inner::after  { bottom: 8px; }
+
+    .top-border {
+      height: 6px;
+      width: 100%;
+      background: linear-gradient(90deg, #ff4b8b, #ff9f43, #ffdd55);
+      border-radius: 999px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      color: #b2234e;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    /* Invitation */
+    .invitation-box {
+      background: linear-gradient(135deg, #fff0f7, #ffe8dd);
+      padding: 20px 16px;
+      border-radius: 18px;
+      border: 1px solid #f1b8cf;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+      margin-bottom: 22px;
+    }
+
+    .invitation-box h2 {
+      text-align: center;
+      font-size: 20px;
+      font-weight: 700;
+      color: #b2234e;
+      margin-bottom: 10px;
+    }
+
+    .invitation-box p {
+      font-size: 16px;
+      line-height: 1.8;
+      color: #5b2a3b;
+      text-align: justify;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .sub-title {
+      font-size: 14px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #ff4b8b;
+    }
+
+    .couple-names {
+      font-size: 26px;
+      font-weight: 700;
+      color: #ff4b8b;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      0% {
+        text-shadow: 0 0 6px rgba(255,75,139,0.6),
+                     0 0 12px rgba(255,159,67,0.5);
+      }
+      100% {
+        text-shadow: 0 0 12px rgba(255,75,139,1),
+                     0 0 20px rgba(255,159,67,1);
+      }
+    }
+
+    .divider {
+      width: 90px;
+      height: 2px;
+      background: linear-gradient(90deg, #ff4b8b, #ff9f43);
+      margin: 12px auto;
+    }
+
+    .section-title {
+      font-size: 20px;
+      color: #b2234e;
+      margin-top: 18px;
+      border-left: 4px solid #ff9f43;
+      padding-left: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .photo-section {
+      display: flex;
+      justify-content: center;
+      gap: 22px;
+      margin: 12px 0 24px;
+      animation: fadeIn 1.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .photo-box {
+      width: 45%;
+      text-align: center;
+    }
+
+    .photo-frame-outer {
+      padding: 5px;
+      border-radius: 24px;
+      background: linear-gradient(135deg,#fce3f0,#f4c584,#f7c7da);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.25);
+    }
+
+    .photo-frame-inner {
+      border-radius: 20px;
+      padding: 4px;
+      background: radial-gradient(circle at top, #ffffff, #ffeaf4);
+    }
+
+    .photo-frame-inner img {
+      width: 100%;
+      border-radius: 18px;
+    }
+
+    .photo-name {
+      margin-top: 8px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #b2234e;
+    }
+
+    .family-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .box {
+      background: #fff8fb;
+      border-radius: 14px;
+      padding: 12px 14px;
+      border: 1px solid #ffe0ec;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+    }
+
+    .box h3 {
+      text-align: center;
+      color: #c4295a;
+      margin-bottom: 6px;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #b2234e;
+    }
+
+    .details {
+      background: #fff9f0;
+      border-radius: 14px;
+      border: 1px solid #ffe0b3;
+      padding: 12px 14px;
+      margin-top: 14px;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 14px;
+      font-size: 13px;
+      color: #666;
+    }
+
+    /* FULL RESPONSIVE SUPPORT */
+    @media (max-width: 900px) {
+      .photo-section { flex-direction: column; }
+      .photo-box { width: 100%; }
+    }
+
+    @media (max-width: 750px) {
+      .family-section { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 20px; }
+      .couple-names { font-size: 22px; }
+      .photo-name { font-size: 16px; }
+    }
+
+    @media (max-width: 450px) {
+      body { padding: 8px; }
+      .card-inner { padding: 12px; }
+    }
+
+   
+
+.page-signature {
+      width: 100%;
+      text-align: center;
+      margin-top: 25px;
+      padding-bottom: 30px;
+      font-size: 14px;
+      font-style: italic;
+      color: #a61d47;
+      letter-spacing: 0.4px;
+      display: block;  /* FIX */
+    }
+
+    .page-signature span {
+      display: block;
+      margin-top: 5px;
+      font-family: "Pacifico", cursive;
+      font-size: 22px;
+      font-weight: 600;
+      color: #b2234e;
+      text-shadow: 0 0 6px rgba(255,150,180,0.35);
+    }
+
+
+    /* ===== HARDCOPY CARD ===== */
+.hardcard-wrapper {
+  margin: 16px auto 20px;
+  max-width: 420px;
+  text-align: center;
+}
+
+.hardcard {
+  position: relative;
+  height: 640px;
+}
+
+.card-page {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+  opacity: 0;
+  transform: scale(0.96);
+  transition: all 0.6s ease;
+  padding: 10px;
+}
+
+.card-page.active {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 2;
+}
+
+.card-page img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 14px;
+}
+
+.card-page span {
+  display: block;
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #b2234e;
+}
+
+.card-controls {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.card-controls button {
+  background: linear-gradient(135deg,#ff4b8b,#ff9f43);
+  border: none;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+}
+
+.card-controls button:hover {
+  transform: scale(1.05);
+}
+
+
+/* ===== BOOK FLIP EFFECT ===== */
+.card-page {
+  transform-origin: left center;
+  backface-visibility: hidden;
+}
+
+.card-page.flip-out {
+  animation: flipOut 0.6s forwards;
+}
+
+.card-page.flip-in {
+  animation: flipIn 0.6s forwards;
+}
+
+@keyframes flipOut {
+  from { transform: rotateY(0deg) scale(1); opacity: 1; }
+  to   { transform: rotateY(-90deg) scale(0.95); opacity: 0; }
+}
+
+@keyframes flipIn {
+  from { transform: rotateY(90deg) scale(0.95); opacity: 0; }
+  to   { transform: rotateY(0deg) scale(1); opacity: 1; }
+}
+
+/* ===== FULLSCREEN VIEW ===== */
+.fullscreen {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  cursor: zoom-out;
+}
+
+.fullscreen img {
+  max-width: 95%;
+  max-height: 95%;
+  border-radius: 14px;
+  box-shadow: 0 0 40px rgba(255,255,255,0.3);
+}
+
+
+  </style>
+</head>
+
+<body>
+
+  <!-- Glow -->
+  <div class="glow-behind"></div>
+
+  <!-- Bubbles -->
+  <div class="bg-animation">
+    <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+    <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+    <div class="bubble"></div>
+  </div>
+
+  <!-- Petals -->
+  <div class="petal-layer">
+    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+  </div>
+
+  <!-- Main Card -->
+  <div class="card">
+    <div class="card-inner">
+
+      <div class="top-border"></div>
+
+      <h1>আমন্ত্রণ লিপি</h1>
+
+      
+
+      <div class="header">
+        <div class="sub-title">👑 শুভ বিবাহ 👑</div>
+        <div class="couple-names">কল্যাণীয়া অতশ্রী & কল্যাণীয় বলরাম</div>
+        <div class="divider"></div>
+      </div>
+
+      <!-- Photos -->
+      <h2 class="section-title"><span>👰</span> বর ও কনের ছবি <span>🤵</span></h2>
+      <div class="photo-section">
+        <div class="photo-box">
+          <div class="photo-frame-outer">
+            <div class="photo-frame-inner">
+              <img src="bride.jpg" alt="Bride">
+            </div>
+          </div>
+          <div class="photo-name">কল্যাণীয়া অতশ্রী</div>
+        </div>
+
+        <div class="photo-box">
+          <div class="photo-frame-outer">
+            <div class="photo-frame-inner">
+              <img src="groom.jpg" alt="Groom">
+            </div>
+          </div>
+          <div class="photo-name">কল্যাণীয় বলরাম</div>
+        </div>
+      </div>
+
+      <!-- Families -->
+      <h2 class="section-title">🌸 পরিবার পরিচিতি</h2>
+      <div class="family-section">
+
+        <div class="box">
+          <h3>মুকুটের পরিবার – অতশ্রী</h3>
+          <p><span class="label">পিতা :</span> অলক ভৌমিক</p>
+          <p><span class="label">মাতা :</span> শ্যামলী ভৌমিক</p>
+          <p><span class="label">ভাই :</span> আকাশ ভৌমিক</p>
+          <p><span class="label">দাদু :</span> স্বর্গীয় সতীশ ভৌমিক</p>
+          <p><span class="label">ঠাকুমা :</span> স্বর্গীয় কল্পনা ভৌমিক</p>
+          <br>
+          <p><span class="label">নিবাস :</span> চকদুর্গা দাস</p>
+          <p><span class="label">পোস্ট :</span> সালিকা গড়চোক</p>
+          <p><span class="label">থানা :</span> তমলুক</p>
+          <p><span class="label">জেলা :</span> পূর্ব মেদিনীপুর</p>
+          <p><span class="label">পিন :</span> ৭২১৬৫৩</p>
+        </div>
+
+        <div class="box">
+          <h3>টোপরের পরিবার – বলরাম</h3>
+          <p><span class="label">পিতা :</span> শ্রীমন্ত পাল</p>
+          <p><span class="label">মাতা :</span> পুতুল পাল</p>
+          <p><span class="label">দাদু :</span> নিমাই পাল</p>
+          <p><span class="label">ঠাকুমা :</span> জ্যোৎস্না পাল</p>
+          <br>
+          <p><span class="label">নিবাস :</span> অনন্তপুর</p>
+          <p><span class="label">পোস্ট :</span> চন্শ্বরপুর</p>
+          <p><span class="label">থানা :</span> তমলুক</p>
+          <p><span class="label">জেলা :</span> পূর্ব মেদিনীপুর</p>
+          <p><span class="label">পিন :</span> ৭২১৬৫৩</p>
+        </div>
+
+      </div>
+      <br><br>
+      <!-- Invitation Letter -->
+        <div class="invitation-box"> <h2>💌 আমন্ত্রণ পত্র</h2> <p> <b>প্রিয় মহোদয়/মহোদয়া,</b>
+        <br>
+        <br> স্নেহ, শুভাশীষ ও ভালোবাসায় আমরা আনন্দের সঙ্গে জানাচ্ছি যে, আমাদের আদরের <b>কল্যাণীয়া অতশ্রী</b> ও <b>কল্যাণীয় বলরাম</b>–এর পবিত্র বিবাহবন্ধন আগামী 
+        <b>২০শে মাঘ ১৪৩২ বঙ্গাব্দ (৩রা ফেব্রুয়ারি ২০২৫, মঙ্গলবার)
+
+        </b> তারিখে সুষ্ঠুভাবে সম্পন্ন হতে চলেছে।<br><br> 
+        এই শুভ দিনটিকে আরও পুণ্যময়, আনন্দময় ও স্মরণীয় 
+        করে তুলতে আপনার স্নেহময় উপস্থিতি ও আশীর্বাদ আমরা 
+        আন্তরিকভাবে কামনা করি।<br><br> আপনার শুভাগমন আমাদের আনন্দ
+         উৎসবকে আরও সমৃদ্ধ ও মনোরম করে তুলবে—এটাই আমাদের পরম প্রত্যাশা।
+         <br><br> <b>বিনীত / বিনীতা,<br>শ্রীযুক্ত অলক ভৌমিক ও শ্রীমতি শ্যামলী ভৌমিক</b> </p> </div>
+
+      <!-- Details -->
+      <h2 class="section-title">📜 স্মারক লিপি</h2>
+
+      <div class="details">
+        <p><span class="label">অনুষ্ঠান :</span> শুভবিবাহ ও প্রীতিভোজ</p>
+        <p><span class="label">তারিখ :</span> ২০ ই মাঘ ১৪৩২</p>
+        <p><span class="label">ইংরেজি :</span> ৩ রা ফেব্রুয়ারি ২০২৫ (মঙ্গলবার)</p>
+        <p><span class="label">সময় :</span> রাত্রি ৮ ঘটিকায়</p>
+        <br>
+        <p><span class="label">স্থান :</span> নিজ বাসভবন</p>
+        <p>চকদুর্গা দাস; শালিকা গড়চক; তমলুক; পূর্ব মেদিনীপুর</p>
+      </div>
+
+      <div class="details">
+        <p><span class="label">যোগাযোগ :</span> ৯৭৩২৭৯১১৪৬</p>
+        <div style="background:#fdf2ff;border:1px dashed #dcb3ff;padding:10px;border-radius:10px;margin-top:8px;">
+          <span class="label">পথনির্দেশ :</span><br>
+          তমলুক–পাঁশকুড়া বাস স্ট্যান্ড হইতে  
+          দামোদরপুর বাস স্ট্যান্ডে নেমে  
+          প্রায় ১০ মিনিট হাঁটার পথ।
+        </div>
+      </div>
+
+      <div class="footer">
+        আপনাদের শুভাশীষই আমাদের সর্বশ্রেষ্ঠ উপহার 💐
+      </div>
+
+ 
+    </div>
+    <!-- HARDCOPY CARD SECTION -->
+<h2 class="section-title">📜 হার্ডকপি আমন্ত্রণ পত্র</h2>
+
+<div class="hardcard-wrapper">
+  <div class="hardcard">
+    <div class="card-page active" onclick="openFullscreen(this)">
+      <img src="Card Front cover.jpg" alt="Front Cover">
+      <br>
+      <span>পৃষ্ঠা ১ : কার্ডের প্রচ্ছদ</span>
+    </div>
+
+    <div class="card-page" onclick="openFullscreen(this)">
+      <img src="Card Inside main page.jpg" alt="Inside Page">
+      <br>
+      <span>পৃষ্ঠা ২ : আমন্ত্রণ পত্র</span>
+    </div>
+
+   <div class="card-page" onclick="openFullscreen(this)">
+      <img src="Card Back  last page.jpg" alt="Back Page">
+      <br>
+      <span>পৃষ্ঠা ৩ : বিবরণ</span>
+    </div>
+  </div>
+  <br>
+  <div class="card-controls">
+    <button onclick="prevPage()">◀ আগের পৃষ্ঠা</button>
+    <button onclick="nextPage()">পরের পৃষ্ঠা ▶</button>
+  </div>
+</div>
+
+  </div>
+
+<br>
+<div class="page-signature">
+  — Crafted with Love & Elegance  
+  <span>J.J</span>
+</div>
+
+
+<script>
+let currentPage = 0;
+const pages = document.querySelectorAll(".card-page");
+
+function showPage(index, direction = "next") {
+  const current = pages[currentPage];
+  current.classList.add("flip-out");
+
+  setTimeout(() => {
+    current.classList.remove("active","flip-out");
+
+    currentPage = index;
+    const next = pages[currentPage];
+    next.classList.add("active","flip-in");
+
+    setTimeout(() => next.classList.remove("flip-in"), 600);
+  }, 300);
+}
+
+function nextPage() {
+  let next = (currentPage + 1) % pages.length;
+  showPage(next, "next");
+}
+
+function prevPage() {
+  let prev = (currentPage - 1 + pages.length) % pages.length;
+  showPage(prev, "prev");
+}
+
+/* FULLSCREEN */
+function openFullscreen(el){
+  const src = el.querySelector("img").src;
+  const overlay = document.createElement("div");
+  overlay.className = "fullscreen";
+  overlay.innerHTML = `<img src="${src}">`;
+  overlay.onclick = () => overlay.remove();
+  document.body.appendChild(overlay);
+}
+</script>
+
+
+</body>
+</html>
